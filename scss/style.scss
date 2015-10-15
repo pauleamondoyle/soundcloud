@@ -73,3 +73,123 @@ img {
  * YOUR CODE HERE
  */
 
+$myBlue: #76C9ED;
+$myWhite: #EFEFEF;
+$myBlack: #383838;
+
+body{
+    font-family: 'Roboto', sans-serif;
+    background-color: $myBlue;
+    transition: none;
+}
+
+#trackListItems{
+    list-style: none;
+    font-family: 'Roboto',sans-serif;
+    margin: auto;   
+    width: 300px;
+}
+
+li{
+    list-style: none;
+    font-family: 'Roboto', sans-serif;
+    font-size: 6px;
+    border-top: 0.5px solid $myWhite;
+    padding: 3px;
+    font-weight: 300;
+    color: $myWhite;
+}
+
+#listHeader{
+    background-color: $myWhite;
+    color: $myBlue;
+}
+
+li:hover{
+    font-weight: 500;
+    cursor: pointer;
+}
+
+// T R A C K  P L A Y E R
+
+#containerTwo{
+    background-color: white;
+    color: $myBlack;
+}
+
+#TrackPlayer{
+    color: $myBlack;
+    background-color: white;
+    width: 300px;
+    margin: auto;
+    margin-top: 20px;
+    padding-top: 10px;
+    transition: none;
+}
+
+#MainInfo{
+    font-size: 6px;
+    text-align: center;
+}
+
+#trackArtist{
+    font-weight: 300;
+}
+
+#trackTitle{
+    font-weight: bold;
+    text-indent: 0;
+}
+
+#favoriteCount{
+    i{
+        font-size: 6px;
+    }
+    color: lightGray;
+    font-size: 6px;
+    text-align: center;
+    padding-bottom: 10px;
+    font-family: 'Helvetica'
+}
+
+#waveform{
+    -webkit-filter: invert(1);
+   filter: invert(1);
+}
+
+#playControls{
+    text-align: center;
+    transition: none;
+}
+
+button{
+    p{
+        padding: 0;
+    }
+    background-color: white;
+    border: none;
+    transition: none;
+    padding: 0;
+}
+
+button:hover{
+    color: lightGray;
+    transition: none;    
+}
+
+button:focus{
+    outline: none;    
+}
+
+#play{
+    padding: 0;
+}
+
+#stop{
+    padding: 0;
+}
+
+#blank{
+    margin: 0;
+}
+
