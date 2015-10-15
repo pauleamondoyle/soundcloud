@@ -214,6 +214,8 @@ var SoundRouter = Backbone.Router.extend({
 		console.log('playTrack running')
 		SC.get('tracks/'+trackId).then(function(track){
 			React.render(<TrackPlayer singleTrackData={track} />,document.querySelector('#containerTwo'))		
+		}).then(function(){
+			$('#stop').show()
 		}).then(this._streamTrack(trackId))
 		
 	},
