@@ -139,7 +139,7 @@ var MetaData = React.createClass({
 
 	render: function(){
 		return(
-			<p id='favoriteCount'><i className="material-icons">favorite_border</i>&nbsp;&nbsp;{this.props.trackData.favoritings_count}&nbsp;&nbsp;&nbsp;&nbsp;<i className="material-icons">play_circle_filled</i>&nbsp;&nbsp;{this.props.trackData.playback_count}</p>
+			<p id='favoriteCount'><i className="material-icons">favorite_border</i>&nbsp;&nbsp;{this.props.trackData.favoritings_count}<br><i className="material-icons">play_circle_filled</i>&nbsp;&nbsp;{this.props.trackData.playback_count}</p>
 			)
 	}
 
