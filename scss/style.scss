@@ -125,6 +125,8 @@ li:hover{
     margin-top: 20px;
     padding-top: 10px;
     transition: none;
+    height: 125px;
+    width: 60%;
 }
 
 #MainInfo{
@@ -172,11 +174,10 @@ li:hover{
 #albumCover{
     position: relative;
     display: inline-block;
-    width: 40px;
-    margin-left: 17px;
+    width: 84px;
+    margin-left: 23px;
     margin-top: 3px;
-    padding-top: 3px;
-    padding-bottom: 4px;
+    padding-top: 7px;
 }
 
 
