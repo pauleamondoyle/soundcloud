@@ -78,9 +78,9 @@ var TrackPlayer = React.createClass({
 		console.log('track player rendering')
 		return(
 			<div id='TrackPlayer' className='animated fadeInUp'>
+				<TrackState trackData={this.props.singleTrackData} />
 				<MainInfo trackData={this.props.singleTrackData} />
 				<TrackProgress trackData={this.props.singleTrackData} />
-				<TrackState trackData={this.props.singleTrackData} />
 				<MetaData trackData={this.props.singleTrackData} />
 			</div>
 			)
@@ -115,16 +115,19 @@ var TrackProgress = React.createClass({
 
 var TrackState = React.createClass({
 
+	_clickHandler: function(event){
+		var clickedIcon = event.target;
+		console.log(clickedIcon)
+		clickedIcon.display = none;
+	},
+
 	render: function(){
 		return(
 			<div id='playControls'>
-				<button id="play" type="text">
-	        		<i className="material-icons">play_arrow</i>
-	       		</button>
+				<img id='albumCover' src={this.props.trackData.artwork_url}> </img>
+	        	<i id='play' className="material-icons">play_arrow</i>
 
-	        	<button id="stop" type="text">
-	        		<i className="material-icons">pause</i>
-	        	</button>
+	        	<i id='stop' className="material-icons">pause</i>
 
         	</div>
 			)
@@ -173,7 +176,8 @@ var SoundRouter = Backbone.Router.extend({
 		console.log(sound)
 		$('#play').click(function(){
 			console.log('clicked!')
-			sound.play()	
+			$('#play').hide;	
+			sound.play()
 		})
 		$('#stop').click(function(){
 			console.log('clicked!')
@@ -186,14 +190,20 @@ var SoundRouter = Backbone.Router.extend({
 			console.log(sound)
 			//below line makes it so that song immediately plays when clicked
 			sound.play()
-			$('#play').click(function(){
-				console.log('clicked!')
-				sound.play()			
-			})
+			$('#play').hide()
 			$('#stop').click(function(){
 				console.log('clicked!')
+				$(this).hide()
+				$('#play').show()
 				sound.pause()			
 			})
+			$('#play').click(function(){
+				console.log('clicked!')
+				$(this).hide()
+				$('#stop').show()
+				sound.play()			
+			})
+			
 			on(state-change,function(){
 				console.log('state changed')
 			})
