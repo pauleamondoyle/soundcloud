@@ -83,6 +83,14 @@ body{
     transition: none;
 }
 
+header{
+    text-align: center;
+    padding-top: 8px;
+    img{
+        width: 75px;
+    }
+}
+
 #trackListItems{
     list-style: none;
     font-family: 'Roboto',sans-serif;
@@ -129,6 +137,7 @@ li:hover{
     position: fixed;
     bottom: 0;
     left: 22%;
+    margin-top: 15px;
 }
 
 #MainInfo{
