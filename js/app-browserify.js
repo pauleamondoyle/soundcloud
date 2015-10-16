@@ -64,13 +64,19 @@ var TrackListings = React.createClass({
 		console.log(this)
 		var trackArray = this.props.trackData
 		return(
-			<ul id='trackListItems'>
-				{trackArray.map(this._getTracks)}
-			</ul>
+			<div>
+				<p id='results'> 
+					Results 
+				</p>
+				<ul id='trackListItems'>
+					{trackArray.map(this._getTracks)}
+				</ul>
+			</div>
 			)
 	}
 
 })
+
 
 var TrackPlayer = React.createClass({
 
@@ -86,6 +92,8 @@ var TrackPlayer = React.createClass({
 			)
 	}
 })
+
+
 
 var MainInfo = React.createClass({
 
@@ -105,9 +113,42 @@ var MainInfo = React.createClass({
 
 var TrackProgress = React.createClass({
 
+	// getInitialState: function(){
+	// 	return{
+	// 		ticking: true,
+	// 		width: 0
+	// 	}
+	// },
+
+	// _tickForward: function(){
+	// 	var self = this
+	// 	var trackLength = this.props.trackData.duration
+	// 	console.log(trackLength)
+	// 	if(this.state.width < trackLength){
+			
+	// 		var go = setInterval(function(){
+	// 			self.setState({
+	// 			//below +2 is because we are multiplying the track length in seconds times 2 in order to double the length of the line (purely for styling purposes)
+	// 			width: self.state.width + 0.1,
+	// 			ticking: true
+	// 			})
+	// 		},1000)
+	// 	}
+	// },
+
 	render: function(){
+		// var trackLength = this.props.trackData.duration
+		// console.log('duration:')
+		// console.log(trackLength)
+		// // below should come out to about 400px for average song length
+		// var grayBarWidth = (trackLength / 1000) * 2 
+		// var orangeBarStyle = {width: this.state.width, 'max-width':grayBarWidth}
+		// var grayBarStyle = {width: grayBarWidth}
+
 		return(
-			<p id='blank'></p>
+			<div id='barOne' >
+				<p id='orangeBar'  ></p>
+			</div>
 			)
 	}
 
@@ -122,6 +163,9 @@ var TrackState = React.createClass({
 	},
 
 	render: function(){
+		
+		if(this.props.trackData.artwork_url){
+
 		return(
 			<div id='playControls'>
 				<img id='albumCover' src={this.props.trackData.artwork_url}> </img>
@@ -131,6 +175,21 @@ var TrackState = React.createClass({
 
         	</div>
 			)
+		}
+		else{
+
+			return(
+			<div id='playControls'>
+				<img id='albumCover' src='images/white-square.png'> </img>
+	        	<i id='play' className="material-icons">play_arrow</i>
+
+	        	<i id='stop' className="material-icons">pause</i>
+
+        	</div>
+			)
+
+
+		}
 	}
 
 })
@@ -146,6 +205,19 @@ var MetaData = React.createClass({
 })
 
 
+// =====  RECEIVE SEARCH INPUT =====
+
+$('#searchbar').keypress(function(event){
+	if (event.keyCode == 13){
+		console.log('Enter!')
+		var searchbar = event.target
+		var searchTerm = searchbar.value;
+		// SC.sound.pause()
+		location.hash = 'search/' + searchTerm
+		searchbar.value = '';
+
+	}
+})
 
 
 // =====  SOUNDCLOUD SDK =====
@@ -162,6 +234,7 @@ var SoundRouter = Backbone.Router.extend({
 
 	routes: {
 		'play/:trackId': 'playTrack',
+		'search/:searchTerm': 'runSearch',
 		'*anyroute': 'showDefault'
 	},
 
@@ -171,7 +244,35 @@ var SoundRouter = Backbone.Router.extend({
 		})
 	},
 
+	runSearch: function(searchTerm){
+		console.log(searchTerm)
+		var self = this
+
+		SC.get('/tracks', {
+			q:searchTerm,
+			license: 'cc-by-sa'}
+			).then(function(tracks){
+				console.log('here it is:')
+				console.log(tracks)
+				var firstTrackId = tracks[0].id
+				console.log(firstTrackId)
+				React.render(<DisplayOverall trackData={tracks}/>,document.querySelector('#container'))		
+				// React.unmountComponentAtNode(document.getElementById('containerTwo'));
+		})
+		// after rendering Display overall, should re-render track player with first track in array?
+	},
+
+	_scSearchCallback: function(data){
+		console.log('running _scSearchCallback')
+		var firstTrackId = this.props.trackData[0].id
+		console.log('first track id:')
+		console.log(firstTrackId)
+		SC.stream('tracks/'+firstTrackId)
+	},
+
 	_scStreamCallback: function(sound){
+		SC.sound = sound
+
 		console.log('Sound:')
 		console.log(sound)
 		$('#play').click(function(){
@@ -183,12 +284,16 @@ var SoundRouter = Backbone.Router.extend({
 			console.log('clicked!')
 			sound.pause()			
 		})
+		
 	},
 
 	_streamTrack: function(trackId){
 		SC.stream('/tracks/'+ trackId).then(function(sound){
+			SC.sound = sound
+			console.log('streaming!')
 			console.log(sound)
 			//below line makes it so that song immediately plays when clicked
+
 			sound.play()
 			$('#play').hide()
 			$('#stop').click(function(){
@@ -204,9 +309,6 @@ var SoundRouter = Backbone.Router.extend({
 				sound.play()			
 			})
 			
-			on(state-change,function(){
-				console.log('state changed')
-			})
 		})
 	},
 
